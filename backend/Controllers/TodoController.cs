@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace backend.Controllers
 {
-    [Authorize] 
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase
@@ -51,7 +51,7 @@ namespace backend.Controllers
                 DueDate = todoItemDto.DueDate,
                 Priority = todoItemDto.Priority,
                 Status = todoItemDto.Status,
-                UserId = userId 
+                UserId = userId
             };
 
             _context.TodoItems.Add(newTodoItem);
@@ -59,7 +59,74 @@ namespace backend.Controllers
 
             return CreatedAtAction(nameof(GetTodoItems), new { id = newTodoItem.Id }, newTodoItem);
         }
-        
-        
+
+        // Add this method inside the TodoController class
+
+        // DELETE: api/todo/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTodoItem(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Find the task by its ID
+            var todoItem = await _context.TodoItems.FindAsync(id);
+
+            if (todoItem == null)
+            {
+                return NotFound(); // Task doesn't exist
+            }
+
+            // IMPORTANT: Security check - ensure the task belongs to the logged-in user
+            if (todoItem.UserId != userId)
+            {
+                return Forbid(); // User is not authorized to delete this task
+            }
+
+            _context.TodoItems.Remove(todoItem);
+            await _context.SaveChangesAsync();
+
+            return NoContent(); // Standard response for a successful delete
+        }
+
+
+
+// Add this method inside the TodoController class
+
+// PUT: api/todo/{id}
+[HttpPut("{id}")]
+public async Task<IActionResult> UpdateTodoItem(int id, [FromBody] TodoItemDto todoItemDto)
+{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+    // Find the existing task
+    var todoItem = await _context.TodoItems.FindAsync(id);
+
+    if (todoItem == null)
+    {
+        return NotFound();
     }
+
+    // Security check: Ensure the task belongs to the logged-in user
+    if (todoItem.UserId != userId)
+    {
+        return Forbid();
+    }
+
+    // Update the properties of the existing task
+    todoItem.Title = todoItemDto.Title;
+    todoItem.Description = todoItemDto.Description;
+    todoItem.DueDate = todoItemDto.DueDate;
+    todoItem.Priority = todoItemDto.Priority;
+    todoItem.Status = todoItemDto.Status;
+
+    // Mark the entity as modified and save changes
+    _context.Entry(todoItem).State = EntityState.Modified;
+    await _context.SaveChangesAsync();
+
+    return NoContent(); // Standard response for a successful update
+}
+
+    }
+    
+    
 }
