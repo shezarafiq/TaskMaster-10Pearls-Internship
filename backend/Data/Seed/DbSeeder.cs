@@ -5,8 +5,8 @@ namespace backend.Data.Seed
 {
     public static class DbSeeder
     {
-        public static async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
-        {
+public static async Task SeedAllDataAsync(IServiceProvider serviceProvider)      
+  {
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             

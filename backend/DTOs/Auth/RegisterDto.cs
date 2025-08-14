@@ -13,5 +13,13 @@ namespace backend.DTOs.Auth
 
         [Required]
         public string? Password { get; set; }
+
+        [Required]
+        public string? FirstName { get; set; }
+
+        [Required]
+        public string? LastName { get; set; }
+
+        public string? Gender { get; set; }
     }
 }

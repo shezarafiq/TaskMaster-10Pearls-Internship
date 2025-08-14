@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 
 namespace backend.Controllers
 {
@@ -17,23 +18,64 @@ namespace backend.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public TodoController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly ILogger<ProfileController> _logger;
+
+        public TodoController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ILogger<ProfileController> logger)
         {
             _context = context;
             _userManager = userManager;
+            _logger = logger; 
+
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetTodoItems()
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        // [HttpGet]
+        // public async Task<IActionResult> GetTodoItems()
+        // {
+        //     var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var todoItems = await _context.TodoItems
-                                    .Where(item => item.UserId == userId)
-                                    .ToListAsync();
+        //     var todoItems = await _context.TodoItems
+        //                             .Where(item => item.UserId == userId)
+        //                             .ToListAsync();
 
-            return Ok(todoItems);
-        }
+        //     return Ok(todoItems);
+        // }
+    [HttpGet]
+public async Task<IActionResult> GetTodoItems()
+{
+    // Get the full user object for the currently logged-in user
+    var currentUser = await _userManager.GetUserAsync(User);
+    if (currentUser == null)
+    {
+        return Unauthorized();
+    }
+
+    // Get the roles for that specific user
+    var userRoles = await _userManager.GetRolesAsync(currentUser);
+
+    // Check if "Admin" is one of their roles
+    var isAdmin = userRoles.Contains("Admin");
+
+    // Start building the query
+    IQueryable<TodoItem> query = _context.TodoItems;
+
+            if (isAdmin)
+            {
+                // Admin sees all tasks. For clarity, let's include the user info.
+                // .Include(item => item.User) will join the AspNetUsers table.
+                query = query.Include(item => item.User);
+                _logger.LogInformation("Admin '{UserName}' is fetching all tasks.", currentUser.UserName);
+            }
+            else
+            {
+                // Regular user sees only their own tasks
+                query = query.Where(item => item.UserId == currentUser.Id);
+                _logger.LogInformation("User '{UserName}' is fetching their tasks.", currentUser.UserName);
+            }
+
+    // Execute the final query
+    var todoItems = await query.ToListAsync();
+    return Ok(todoItems);
+}
 
         [HttpPost]
         public async Task<IActionResult> CreateTodoItem([FromBody] TodoItemDto todoItemDto)
