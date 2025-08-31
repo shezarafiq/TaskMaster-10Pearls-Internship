@@ -1,4 +1,3 @@
-// File: backend/DTOs/Admin/SetUserStatusDto.cs
 using System.ComponentModel.DataAnnotations;
 
 namespace backend.DTOs.Admin

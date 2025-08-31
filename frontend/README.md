@@ -1,70 +1,78 @@
-# Getting Started with Create React App
+# TaskMaster: A Full-Stack Task Management Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a web-based task management system built with ASP.NET Core and React, created as a project for my online internship. It supports user authentication, role-based access, full CRUD operations for tasks, and includes professional backend features like logging, testing, and static analysis.
 
-## Available Scripts
+## Technology Stack
+- **Backend:** ASP.NET Core 6, Entity Framework Core, Serilog
+- **Frontend:** React.js, Styled-Components
+- **Database:** SQL Server
+- **Testing:** xUnit, Moq
+- **Code Analysis:** SonarQube
+- **Runtime:** Docker (for SonarQube)
 
-In the project directory, you can run:
+## Key Features
+- **Role-Based Access Control:** Differentiates between regular 'Users' (who can only manage their own tasks) and 'Admins' (who can manage all tasks and all users).
+- **Full CRUD Functionality:** Users can Create, Read, Update, and Delete their tasks through a modern Kanban board interface.
+- **Admin Panel:** A dedicated UI for administrators to view all users, change their active status, and manage their roles.
+- **Secure API:** The backend API is secured using JWT (JSON Web Token) authentication.
+- **Professional Backend:** Includes structured logging with Serilog, global exception handling, and a suite of unit tests.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Clone the Repository
+<!-- First, clone the project from GitHub to your local machine:
+```bash
+git clone https://github.com/shezarafiq/TaskMaster-10Pearls-Internship.git
+cd TaskMaster-10Pearls-Internship -->
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## How to Run This Project
 
-### `npm run build`
+### Prerequisites
+- .NET 6 SDK
+- Node.js (v16 or later)
+- SQL Server (Express Edition is sufficient)
+- Docker Desktop (for running SonarQube)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 1. Backend Setup
+1.  Navigate to the `backend` folder.
+2.  Update the `DefaultConnection` string in `appsettings.json` if your SQL Server instance is different from `localhost\SQLEXPRESS`.
+3.  Open a terminal in the `backend` folder and run the following commands to set up the database:
+    ```bash
+    dotnet ef database drop
+    dotnet ef database update
+    ```
+4.  Run the backend server:
+    ```bash
+    dotnet run
+    ```
+The API will be running on `http://localhost:5209` (or a similar port). The database will be automatically seeded with a default admin account.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 2. Frontend Setup
+1.  Navigate to the `frontend` folder in a new terminal.
+2.  Install the required packages:
+    ```bash
+    npm install
+    ```
+3.  Run the frontend development server:
+    ```bash
+    npm start
+    ```
+The application will be available at `http://localhost:3000`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Default Credentials
+- **Admin Login:**
+  - **Username:** `admin`
+  - **Password:** `Admin@123!`
+- **User Login:** You can create your own user through the Sign Up page.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## SonarQube Analysis Report
+The project was analyzed using a local SonarQube instance. The analysis was successful and the project **passed the Quality Gate**.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Overview:** The analysis found **0 Bugs** and **0 Vulnerabilities**, with an 'A' rating for both Reliability and Security.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+![SonarQube Overview](analysis/sonarqube-overview.png)
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

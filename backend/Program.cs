@@ -143,17 +143,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog; 
-using backend.Middleware; // ADD THIS
+using backend.Middleware; 
 
 
-// --- 2. CONFIGURE SERILOG AT THE VERY BEGINNING ---
-// Log.Logger = new LoggerConfiguration()
-//     .MinimumLevel.Information()
-//     .WriteTo.Console()
-//     .WriteTo.File("logs/taskmaster_log_.txt", 
-//         rollingInterval: RollingInterval.Day,
-//         outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-//     .CreateBootstrapLogger(); // Use CreateBootstrapLogger for early startup logging
+
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -164,19 +157,14 @@ try
 
     var builder = WebApplication.CreateBuilder(args);
 
-    // --- 3. TELL ASP.NET CORE TO USE SERILOG FOR ITS LOGGING ---
-    // builder.Host.UseSerilog((context, services, configuration) => configuration
-    //     .ReadFrom.Configuration(context.Configuration)
-    //     .ReadFrom.Services(services)
-    //     .Enrich.FromLogContext()
-    //     .WriteTo.Console());
+  
 
     builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext()
-        .WriteTo.Console() // Keep writing to the console
-        .WriteTo.File("logs/taskmaster_log_.txt", // --- ADD THE FILE SINK HERE ---
+        .WriteTo.Console() 
+        .WriteTo.File("logs/taskmaster_log_.txt", 
             rollingInterval: RollingInterval.Day,
             outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
         );
@@ -261,13 +249,11 @@ try
 
     var app = builder.Build();
 
-    // --- Seeder and Pipeline Configuration ---
     try
     {
         using (var scope = app.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
-            // IMPORTANT: Make sure you are calling your final seeder method, e.g., SeedAllDataAsync
             await DbSeeder.SeedAllDataAsync(services);
         }
         Log.Information("Seeding completed successfully.");
@@ -287,8 +273,7 @@ try
 
 
 
-    // --- 4. ADD SERILOG'S REQUEST LOGGING MIDDLEWARE ---
-    // This will automatically log all incoming HTTP requests.
+
     app.UseSerilogRequestLogging();
 
     app.UseCors(MyAllowSpecificOrigins);

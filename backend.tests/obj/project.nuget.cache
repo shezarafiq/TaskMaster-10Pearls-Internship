@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "E8k94bPvrmuMn9mtrRVyKUV++1LUVqSTwX1j5HI9hsCsP94zQhSk/me34BjcDs1ACqIYtoi5QR3eJYkQsKkamA==",
+  "dgSpecHash": "QxjvGpEPvKp4S96ntYFcqLZ0qvv2/b3eVBeQ+V5Z1aAy945hB7ObDQCK+CMJUycPp/y02Nn/Zuw/T5Uc25xeCw==",
   "success": true,
   "projectFilePath": "G:\\Sheza\\TaskMaster\\backend.tests\\backend.tests.csproj",
   "expectedPackageFiles": [
@@ -17,6 +17,7 @@
     "C:\\Users\\musavir\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.31\\microsoft.entityframeworkcore.6.0.31.nupkg.sha512",
     "C:\\Users\\musavir\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\6.0.31\\microsoft.entityframeworkcore.abstractions.6.0.31.nupkg.sha512",
     "C:\\Users\\musavir\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\6.0.31\\microsoft.entityframeworkcore.analyzers.6.0.31.nupkg.sha512",
+    "C:\\Users\\musavir\\.nuget\\packages\\microsoft.entityframeworkcore.inmemory\\6.0.31\\microsoft.entityframeworkcore.inmemory.6.0.31.nupkg.sha512",
     "C:\\Users\\musavir\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\6.0.31\\microsoft.entityframeworkcore.relational.6.0.31.nupkg.sha512",
     "C:\\Users\\musavir\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\6.0.31\\microsoft.entityframeworkcore.sqlserver.6.0.31.nupkg.sha512",
     "C:\\Users\\musavir\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

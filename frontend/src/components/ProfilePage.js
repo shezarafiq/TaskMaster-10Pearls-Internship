@@ -1,121 +1,12 @@
-// // File: frontend/src/components/ProfilePage.js
 
-// import React, { useState, useEffect, useCallback } from 'react';
-// import styled from 'styled-components';
-// import axios from 'axios';
-// import { Link as RouterLink } from 'react-router-dom';
-
-// // Icons
-// import { FiUser, FiMail, FiShield, FiArrowLeft } from 'react-icons/fi';
-
-// // --- STYLING (Reusing the theme from your Dashboard) ---
-// const theme = { /* ... Paste your full theme object here ... */ };
-// // Reusable styled components
-// const PageWrapper = styled.div` /* ... */ `;
-// const Header = styled.header` /* ... */ `;
-// const HeaderTitle = styled.h1` /* ... */ `;
-// const StyledButton = styled.button` /* ... */ `;
-// const ContentContainer = styled.main` padding: 2rem; display: flex; justify-content: center; align-items: flex-start;`;
-// const ProfileCard = styled.div`
-//     background-color: ${theme.surfaceSolid};
-//     border-radius: 12px;
-//     padding: 2rem;
-//     width: 100%;
-//     max-width: 500px;
-//     border: 1px solid ${theme.border};
-//     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-// `;
-// const ProfileInfoRow = styled.div`
-//     display: flex;
-//     align-items: center;
-//     gap: 1rem;
-//     margin-bottom: 1.5rem;
-//     font-size: 1.1rem;
-// `;
-// const InfoText = styled.div``;
-// const InfoLabel = styled.div` color: ${theme.textSecondary}; font-size: 0.9rem;`;
-// const InfoValue = styled.div` color: ${theme.text}; font-weight: 500;`;
-
-
-// // --- MAIN PROFILE PAGE COMPONENT ---
-// const ProfilePage = () => {
-//     const [profile, setProfile] = useState(null);
-
-//     const getApi = useCallback(() => {
-//         const token = localStorage.getItem('token');
-//         return axios.create({ baseURL: 'http://localhost:5209/api', headers: { 'Authorization': `Bearer ${token}` } });
-//     }, []);
-
-//     useEffect(() => {
-//         const fetchProfile = async () => {
-//             try {
-//                 const api = getApi();
-//                 const response = await api.get('/profile/me');
-//                 setProfile(response.data);
-//             } catch (error) {
-//                 console.error('Failed to fetch profile:', error);
-//             }
-//         };
-//         fetchProfile();
-//     }, [getApi]);
-
-//     if (!profile) {
-//         return <PageWrapper><HeaderTitle>Loading Profile...</HeaderTitle></PageWrapper>; // Loading state
-//     }
-
-//     return (
-//         <PageWrapper>
-//             <Header>
-//                 <HeaderTitle><FiUser /> My Profile</HeaderTitle>
-//                 <StyledButton as={RouterLink} to="/dashboard">
-//                     <FiArrowLeft /> Back to Dashboard
-//                 </StyledButton>
-//             </Header>
-//             <ContentContainer>
-//                 <ProfileCard>
-//                     <ProfileInfoRow>
-//                         <FiUser size={24} color={theme.primary} />
-//                         <InfoText>
-//                             <InfoLabel>Username</InfoLabel>
-//                             <InfoValue>{profile.userName}</InfoValue>
-//                         </InfoText>
-//                     </ProfileInfoRow>
-//                     <ProfileInfoRow>
-//                         <FiMail size={24} color={theme.primary} />
-//                         <InfoText>
-//                             <InfoLabel>Email</InfoLabel>
-//                             <InfoValue>{profile.email}</InfoValue>
-//                         </InfoText>
-//                     </ProfileInfoRow>
-//                     <ProfileInfoRow>
-//                         <FiShield size={24} color={theme.primary} />
-//                         <InfoText>
-//                             <InfoLabel>Roles</InfoLabel>
-//                             <InfoValue>{profile.roles.join(', ')}</InfoValue>
-//                         </InfoText>
-//                     </ProfileInfoRow>
-//                 </ProfileCard>
-//             </ContentContainer>
-//         </PageWrapper>
-//     );
-// };
-
-// export default ProfilePage;
-
-
-// File: frontend/src/components/ProfilePage.js
-// File: frontend/src/components/ProfilePage.js
-// File: frontend/src/components/ProfilePage.js
 
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
 
-// Icons
 import { FiUser, FiArrowLeft } from 'react-icons/fi';
 
-// --- THEME & STYLING (Identical to DashboardPage.js) ---
 const theme = {
   primary: '#a78bfa',
   gradient: '#7c3aed',
@@ -254,7 +145,6 @@ const InfoValue = styled.p`
 `;
 
 
-// --- MAIN PROFILE PAGE COMPONENT ---
 const ProfilePage = () => {
     const [profile, setProfile] = useState(null);
 

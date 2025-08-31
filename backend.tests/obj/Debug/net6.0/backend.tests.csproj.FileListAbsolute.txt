@@ -162,3 +162,4 @@ G:\Sheza\TaskMaster\backend.tests\obj\Debug\net6.0\refint\backend.tests.dll
 G:\Sheza\TaskMaster\backend.tests\obj\Debug\net6.0\backend.tests.pdb
 G:\Sheza\TaskMaster\backend.tests\obj\Debug\net6.0\backend.tests.genruntimeconfig.cache
 G:\Sheza\TaskMaster\backend.tests\obj\Debug\net6.0\ref\backend.tests.dll
+G:\Sheza\TaskMaster\backend.tests\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.InMemory.dll

@@ -1,4 +1,3 @@
-// File: backend/Controllers/ProfileController.cs
 
 using backend.DTOs.Profile;
 using backend.Models;
@@ -6,26 +5,35 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using backend.Data; 
 
 namespace backend.Controllers
 {
-    [Authorize] // Requires user to be logged in
+    [Authorize] 
     [Route("api/[controller]")]
     [ApiController]
     public class ProfileController : ControllerBase
     {
+        
+
         private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ILogger<ProfileController> _logger;
+    private readonly ApplicationDbContext _context;
 
-        public ProfileController(UserManager<ApplicationUser> userManager)
-        {
-            _userManager = userManager;
-        }
+    public ProfileController(
+        UserManager<ApplicationUser> userManager, 
+        ILogger<ProfileController> logger, 
+        ApplicationDbContext context)
+    {
+        _userManager = userManager;
+        _logger = logger;
+        _context = context;
+    }
 
-        // GET: api/profile/me
         [HttpGet("me")]
         public async Task<IActionResult> GetMyProfile()
         {
-            // Find the user based on the ID from their token
             var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             if (user == null)
@@ -34,6 +42,7 @@ namespace backend.Controllers
             }
 
 
+            _logger.LogInformation("User '{UserName}' fetched their profile information.", user.UserName);
             var roles = await _userManager.GetRolesAsync(user);
 
             var profileDto = new ProfileDto

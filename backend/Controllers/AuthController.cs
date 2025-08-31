@@ -6,7 +6,7 @@ using backend.DTOs.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Logging; // ADD THIS using statement
+using Microsoft.Extensions.Logging; 
 
 
 namespace backend.Controllers
@@ -17,34 +17,30 @@ namespace backend.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
-     private readonly ILogger<AuthController> _logger; // 1. Add a private field for the logger
+     private readonly ILogger<AuthController> _logger; 
 
 
         public AuthController(UserManager<ApplicationUser> userManager, IConfiguration configuration, ILogger<AuthController> logger)
         {
             _userManager = userManager;
             _configuration = configuration;
-            _logger = logger; // 3. Assign the logger
+            _logger = logger; 
 
         }
 
         [HttpPost]
         [Route("login")]
-        // Paste this entire method into AuthController.cs, replacing the old Login method.
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             var user = await _userManager.FindByNameAsync(loginDto.Username);
 
-            // First, check if the user exists and is active.
             if (user != null && !user.IsActive)
             {
                 return Unauthorized(new { message = "This user account has been deactivated." });
             }
 
-            // Next, check if the password is correct.
             if (user != null && await _userManager.CheckPasswordAsync(user, loginDto.Password))
             {
-                // If credentials are valid, proceed to create the token.
                 var userRoles = await _userManager.GetRolesAsync(user);
 
                 var authClaims = new List<Claim>
@@ -54,7 +50,6 @@ namespace backend.Controllers
             new Claim(ClaimTypes.NameIdentifier, user.Id)
         };
 
-                // Add all of the user's roles to the claims.
                 foreach (var userRole in userRoles)
                 {
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
@@ -62,11 +57,9 @@ namespace backend.Controllers
 
                 var token = GetToken(authClaims);
 
-                // 4. ADD THE LOG STATEMENT
                 _logger.LogInformation("User '{UserName}' logged in successfully.", user.UserName);
 
 
-                // Return the token upon successful login.
                 return Ok(new
                 {
                     token = new JwtSecurityTokenHandler().WriteToken(token),
@@ -79,49 +72,11 @@ namespace backend.Controllers
         return Unauthorized(new { message = "Invalid username or password." });
 
 
-            // If username doesn't exist or password is incorrect, return Unauthorized.
-            // return Unauthorized(new { message = "Invalid username or password." });
+          
             
         }
 
-        // public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
-        // {
-        //     var user = await _userManager.FindByNameAsync(loginDto.Username);
-        //     if (user != null && await _userManager.CheckPasswordAsync(user, loginDto.Password))
-        //     {
-
-        //         // var authClaims = new List<Claim>
-        //         // {
-        //         //     new Claim(ClaimTypes.Name, user.UserName),
-        //         //     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //         //     new Claim(ClaimTypes.NameIdentifier, user.Id) // <-- THE FIX
-        //         // };
-        //         // Get the roles for the user
-        //         var userRoles = await _userManager.GetRolesAsync(user);
-
-        //         var authClaims = new List<Claim>
-        //         {
-        //             new Claim(ClaimTypes.Name, user.UserName),
-        //             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //             new Claim(ClaimTypes.NameIdentifier, user.Id)
-        //         };
-
-        //         // Add all the role claims
-        //         foreach (var userRole in userRoles)
-        //         {
-        //             authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-        //         }
-        //         var token = GetToken(authClaims);
-
-        //         return Ok(new
-        //         {
-        //             token = new JwtSecurityTokenHandler().WriteToken(token),
-        //             expiration = token.ValidTo
-        //         });
-        //     }
-        //     return Unauthorized();
-        // }
-
+       
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)

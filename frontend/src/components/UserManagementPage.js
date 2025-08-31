@@ -1,36 +1,17 @@
-// import React from 'react';
-// import { Link } from 'react-router-dom';
 
-// const UserManagementPage = () => {
-//   return (
-//     <div>
-//       <h1>THIS IS THE ADMIN USER MANAGEMENT PAGE</h1>
-//       <Link to="/dashboard">
-//         <button>Go back to Dashboard</button>
-//       </Link>
-//     </div>
-//   );
-// };
-
-// export default UserManagementPage;
-
-
-// File: frontend/src/components/UserManagementPage.js
 
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { Link as RouterLink } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode'; // Import jwt-decode
+import { jwtDecode } from 'jwt-decode'; 
 
-// Icons
+
 import { FiUsers, FiArrowLeft, FiShield, FiUserCheck, FiUserX, FiBriefcase } from 'react-icons/fi';
 
-// MUI Components for Dialogs
 import { Dialog, DialogContent, DialogTitle, DialogActions, MenuItem, TextField, Button as MuiButton } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-// --- STYLING (Reusing the theme from your Dashboard) ---
 const theme = {
   primary: '#a78bfa',
   gradient: '#7c3aed',
@@ -53,7 +34,6 @@ const muiDarkTheme = createTheme({
   },
 });
 
-// Reusable styled components
 const PageWrapper = styled.div`
   min-height: 100vh;
   background-image: ${theme.bgGradient}; color: ${theme.text};
@@ -106,7 +86,6 @@ const StatusToggle = styled.div`
     color: ${props => props.isActive ? theme.success : theme.error};
 `;
 
-// --- MAIN USER MANAGEMENT COMPONENT ---
 const UserManagementPage = () => {
     const [users, setUsers] = useState([]);
     const [roleModalOpen, setRoleModalOpen] = useState(false);
@@ -137,9 +116,7 @@ const UserManagementPage = () => {
     const handleStatusChange = async (userId, newIsActiveStatus) => {
     try {
         const api = getApi();
-        // Send the new status to the backend
         await api.put(`/admin/set-status/${userId}`, { isActive: newIsActiveStatus });
-        // Refresh the user list to get the updated data from the server
         fetchUsers();
     } catch (error) {
         console.error('Failed to update user status:', error);
@@ -153,11 +130,10 @@ const UserManagementPage = () => {
         try {
             const api = getApi();
             await api.post('/admin/remove-role', { userId: selectedUser.id, roleName: roleName });
-            fetchUsers(); // Refresh users to show role removed
+            fetchUsers(); 
             handleCloseRoleModal();
         } catch (error) {
             console.error('Failed to remove role:', error);
-            // Try to get the specific message from our backend's JSON response
             const errorMessage = error.response?.data?.message || "An unknown error occurred.";
             alert(`Error: ${errorMessage}`);
         }
@@ -203,7 +179,6 @@ const UserManagementPage = () => {
 </StatusToggle>
                   <StyledButton
                     onClick={() => handleOpenRoleModal(user)}
-                    // CORRECTED LOGIC: Only disable role management for the admin's OWN account.
                     disabled={user.id === currentAdminId}
                   >
                     <FiBriefcase size={14}/> Manage Roles

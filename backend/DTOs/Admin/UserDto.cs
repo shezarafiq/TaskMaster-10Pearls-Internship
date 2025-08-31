@@ -1,6 +1,4 @@
-// File: backend/DTOs/Admin/UserDto.cs
 
-// The namespace MUST match the folder structure: backend -> DTOs -> Admin
 namespace backend.DTOs.Admin
 {
     public class UserDto
